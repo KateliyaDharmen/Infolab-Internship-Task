@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+
+<body>
+    <form>
+        <label for="dateIpt">Enter Date</label><input type="date" id="dateIpt">
+        <button>submit</button>
+    </form>
+    <div class="result"></div>
+    <script>
+        const form = document.querySelector("form");
+        const result = document.querySelector(".result");
+        
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const date = document.querySelector("#dateIpt").value;
+            fetchDate(date);
+        });
+
+        async function fetchDate(date) {
+            try {
+                const response = await fetch('https://data.covid19india.org/data.json')
+                const data = await response.json();
+                //console.log(data.cases_time_series);
+
+                const cases = await data.cases_time_series;
+                const dailyData = await cases.find(item => item.dateymd === date)
+                console.log(dailyData);
+
+                if (dailyData) {
+                    result.innerHTML = `
+                  <table>
+                    <tr>
+                        <th>Date</th>
+                        <th>New Cases</th>
+                        <th>New Deaths</th>
+                    </tr>
+                    <tr>
+                        <td>${dailyData.date}</td>
+                        <td>${dailyData.dailyconfirmed}</td>
+                        <td>${dailyData.dailydeceased}</td>
+                    </tr>
+                </table>
+                `;
+                } else {
+                    alert("Data Not Found");
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        }
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task 1</title>
+</head>
+<body>
+    <form>
+        <label for="validNumber">Enter a Number: </label><input id="even-odd-number" type="number" name="validNumber">
+        <button>Calculate</button>
+    </form>
+    <script>
+        const form = document.querySelector("form");
+
+        const checkEvenOdd = (number) => {
+            return number % 2 === 0 ? "Even" : "Odd";
+        }
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const number = parseInt(document.querySelector("#even-odd-number").value);
+            console.log(number);
+            const result = checkEvenOdd(number);
+            alert(`The number ${number} is ${result}.`);
+        });
+    </script>
+</body>
+</html>
